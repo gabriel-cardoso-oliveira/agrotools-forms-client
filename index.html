@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Questionários Agrotools"
+    />
+
+    <title>Agrotools | FORMS</title>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+      integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+      crossorigin="anonymous"
+    >
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="./assets/css/style.css"
+    />
+  </head>
+  <body>
+    <article id="multi">
+      <div class="topo">
+        <h1>Agrotools Forms</h1>
+        <a href="./pages/questions/index.html" class="btn1">
+          <i class="icons fas fa-plus" ></i>
+          Adicionar
+        </a>
+      </div>
+
+      <div id="divQuizzes"></div>
+    </article>
+  </body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    function addQuizzes(quiz) {
+      return $("#divQuizzes").append(quiz);
+    }
+
+    function createEl(quiz) {
+      var htmlQuiz = `
+        <div class="quizzes">
+          <div class="ico">
+            <i class="far fa-comment-dots"></i>
+          </div>
+          <div class="content">
+            <div class="questions">
+              ${quiz.title}
+            </div>
+            <hr />
+            <div class="options">
+              <span>
+                <a class="results">
+                  Resultados
+                </a>
+                <a class="respond">
+                  Responder
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return addQuizzes(htmlQuiz);
+    }
+
+    function getQuizzes() {
+      axios.get('http://localhost:3333/quizzes')
+        .then(function (response) {
+          response.data.map(function (quiz) {
+            createEl(quiz);
+          });
+        })
+        .catch(function (error) {
+          alert("Ocorreu um erro inesperado. Tente novamente!");
+        });
+    }
+
+    getQuizzes();
+  </script>
+</html>

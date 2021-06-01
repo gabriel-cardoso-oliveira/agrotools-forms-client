@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../../favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Questionários Agrotools"
+    />
+
+    <title>Agrotools | FORMS - Adicionar</title>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+      integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+      crossorigin="anonymous"
+    >
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="../../assets/css/style.css"
+    />
+  </head>
+  <body>
+    <article id="multi">
+      <div class="topo center">
+        <h1>Adicionar Questionário</h1>
+        <a href="../../index.html" class="btn1">
+          <i class="icons fa fa-arrow-left" ></i>
+          Voltar
+        </a>
+      </div>
+
+      <div class="gr flex">
+        <div id="form">
+          <form
+            name="formQuizzes"
+            action="../../index.html"
+            onsubmit="return validateForm()"
+            method="post"
+          >
+            <label>
+              <span>Título</span>
+              <Input
+                id="title"
+                name="title"
+                type="text"
+                placeholder="Insira um Título"
+              />
+            </label>
+
+            <label>
+              <span>Usuário</span>
+              <Input
+                id="user"
+                name="user"
+                type="text"
+                placeholder="Responsável pelo Questionário"
+              />
+            </label>
+
+            <hr />
+            <h2>Perguntas</h2>
+
+            <button class="icon" type="button" onclick="createEl()">
+              <i class="icons3 fa fa-plus"></i>
+            </button>
+
+            <div id="questions"></div>
+  
+            <button type="submit">
+              Salvar
+              <i class="icons2 fa fa-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var countQuestions = 1;
+
+    function addQuestion(label) {
+      countQuestions++;
+
+      return document.getElementById("questions").appendChild(label);
+    }
+
+    function createEl() {
+      var label = document.createElement("label");
+      var span = document.createElement("span");
+      var input = document.createElement("input");
+      var name = document.createAttribute("name");
+      var type = document.createAttribute("type");
+      var id = document.createAttribute("id");
+      var place = document.createAttribute("placeholder");
+  
+      span.append("0" + countQuestions);
+      name.nodeValue = "question[" + countQuestions + "]";
+      id.value = countQuestions;
+      type.value = "text";
+      place.value = "Insira uma Pergunta";
+  
+      input.setAttributeNode(place);
+      input.setAttributeNode(type);
+      input.setAttributeNode(name);
+      input.setAttributeNode(id);
+  
+      label.append(span);
+      label.append(input);
+
+      return addQuestion(label);
+    }
+
+    createEl();
+
+    function validateForm() {
+      var title = document.getElementById("title").value;
+      var user = document.getElementById("user").value;
+
+      var values = {
+        title,
+        user,
+        date: new Date(),
+      };
+
+      axios.post('http://localhost:3333/quizzes', values)
+        .then(function (response) {
+          return alert("Questionário salvo com sucesso!");
+        })
+        .catch(function (error) {
+          return alert(error);
+        });
+    }
+  </script>
+</html>
