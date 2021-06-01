@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../../favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Questionários Agrotools"
+    />
+
+    <title>Agrotools | FORMS - Formulário</title>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+      integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+      crossorigin="anonymous"
+    >
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="../../assets/css/style.css"
+    />
+  </head>
+  <body>
+    <article id="multi">
+      <div class="topo center">
+        <h1>Responder Questionário</h1>
+        <a href="../../index.html" class="btn1">
+          <i class="icons fa fa-arrow-left" ></i>
+          Voltar
+        </a>
+      </div>
+
+      <div class="gr flex">
+        <div id="form">
+          <form>
+            <h2 id="quizTitle"></h2>
+            
+            <label>
+              <span>Usuário</span>
+              <Input
+                id="user"
+                name="user"
+                type="text"
+                placeholder="Nome completo"
+              />
+            </label>
+
+            <div id="questions"></div>
+  
+            <button type="button" onclick="handleAddAnswers()">
+              Salvar
+              <i class="icons2 fa fa-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var questions = [];
+
+    function addQuestion(label) {
+      return document.getElementById("questions").appendChild(label);
+    }
+
+    function createEl(question) {
+      var label = document.createElement("label");
+      var span = document.createElement("span");
+      var input = document.createElement("input");
+      var name = document.createAttribute("name");
+      var type = document.createAttribute("type");
+      var id = document.createAttribute("id");
+      var place = document.createAttribute("placeholder");
+  
+      span.append(question.description);
+      name.nodeValue = question.id;
+      id.value = question.id;
+      type.value = "text";
+      place.value = question.description;
+  
+      input.setAttributeNode(place);
+      input.setAttributeNode(type);
+      input.setAttributeNode(name);
+      input.setAttributeNode(id);
+  
+      label.append(span);
+      label.append(input);
+
+      return addQuestion(label);
+    }
+
+    function getQuizzes(quizId) {
+      axios.get(`https://agrotools-froms.herokuapp.com/quizzes/${quizId}`)
+        .then(function (response) {
+          var titleEl = document.getElementById("quizTitle");
+          var title = document.createTextNode(response.data.title);
+          titleEl.appendChild(title);
+
+          response.data.questions.map(function (quiz) {
+            questions.push(quiz);
+
+            createEl(quiz);
+          });
+        })
+        .catch(function (error) {
+          alert("Ocorreu um erro inesperado. Tente novamente!");
+        });
+    }
+
+    function getIdQuiz() {
+      var url = new URL(document.URL);
+      var id = url.searchParams.get("id");
+
+      return getQuizzes(id);
+    }
+
+    getIdQuiz();
+
+    function postAnswers(values, end) {
+      axios.post('https://agrotools-froms.herokuapp.com/answers', values)
+        .then(function (response) {
+          if (end) {
+            alert("Questionário respondido com sucesso!");
+            return window.history.back();
+          }
+        })
+        .catch(function () {});
+    }
+
+    function handleAddAnswers() {
+      questions.map(function (question, index) {
+        var answer = document.getElementById(question.id).value;
+        var user = document.getElementById("user").value;
+
+
+        var values = {
+          answer,
+          user,
+          date: new Date(),
+          question_id: question.id,
+        };
+
+        var end = (index + 1) == questions.length;
+
+        postAnswers(values, end);
+      });
+    }
+  </script>
+</html>
