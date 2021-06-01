@@ -37,12 +37,7 @@
 
       <div class="gr flex">
         <div id="form">
-          <form
-            name="formQuizzes"
-            action="../../index.html"
-            onsubmit="return validateForm()"
-            method="post"
-          >
+          <form>
             <label>
               <span>Título</span>
               <Input
@@ -72,7 +67,7 @@
 
             <div id="questions"></div>
   
-            <button type="submit">
+            <button type="button" onclick="handleAddQuiz()">
               Salvar
               <i class="icons2 fa fa-arrow-right"></i>
             </button>
@@ -84,7 +79,7 @@
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-    var countQuestions = 1;
+    var countQuestions = 0;
 
     function addQuestion(label) {
       countQuestions++;
@@ -101,7 +96,7 @@
       var id = document.createAttribute("id");
       var place = document.createAttribute("placeholder");
   
-      span.append("0" + countQuestions);
+      span.append("0" + (countQuestions + 1));
       name.nodeValue = "question[" + countQuestions + "]";
       id.value = countQuestions;
       type.value = "text";
@@ -120,7 +115,33 @@
 
     createEl();
 
-    function validateForm() {
+    function postQuestions(values, end) {
+      axios.post('https://agrotools-froms.herokuapp.com/questions', values)
+        .then(function (response) {
+          if (end) {
+            alert("Questionário salvo com sucesso!");
+            return window.history.back();
+          }
+        })
+        .catch(function () {});
+    }
+
+    function handleAddQuestion(quizId) {
+      for (var i = 0; i <= countQuestions; i++) {
+        var question = document.getElementById(i.toString()).value;
+
+        var values = {
+          description: question,
+          quiz_id: quizId,
+        };
+
+        var end = (i + 1) == countQuestions;
+
+        postQuestions(values, end);
+      }
+    }
+
+    function handleAddQuiz() {
       var title = document.getElementById("title").value;
       var user = document.getElementById("user").value;
 
@@ -132,11 +153,9 @@
 
       axios.post('https://agrotools-froms.herokuapp.com/quizzes', values)
         .then(function (response) {
-          return alert("Questionário salvo com sucesso!");
+          handleAddQuestion(response.data.id);
         })
-        .catch(function (error) {
-          return alert(error);
-        });
+        .catch(function () {});
     }
   </script>
 </html>
