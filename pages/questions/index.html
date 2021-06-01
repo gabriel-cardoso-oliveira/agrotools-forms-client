@@ -130,7 +130,7 @@
         date: new Date(),
       };
 
-      axios.post('http://localhost:3333/quizzes', values)
+      axios.post('https://agrotools-froms.herokuapp.com/quizzes', values)
         .then(function (response) {
           return alert("Questionário salvo com sucesso!");
         })

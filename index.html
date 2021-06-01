@@ -80,7 +80,7 @@
     }
 
     function getQuizzes() {
-      axios.get('http://localhost:3333/quizzes')
+      axios.get('https://agrotools-froms.herokuapp.com/quizzes')
         .then(function (response) {
           response.data.map(function (quiz) {
             createEl(quiz);
