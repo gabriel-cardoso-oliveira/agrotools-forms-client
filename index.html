@@ -47,11 +47,11 @@
           <div class="modal-body">
             <img
               id='barcode'
-              src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=100x100"
+              src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=600x600"
               alt="Responder Questionário"
               title="Responder Questionário"
-              width="400"
-              height="400"
+              width="50%"
+              height="auto"
             />
           </div>
         </div>
@@ -129,7 +129,7 @@
     function openModal(id) {
       var urlQuiz = `https://agrotools-forms.netlify.app/pages/quizzes/index.html?id=${id}`;
 
-      var url = `https://api.qrserver.com/v1/create-qr-code/?data=${urlQuiz}&amp;size=400x400`;
+      var url = `https://api.qrserver.com/v1/create-qr-code/?data=${urlQuiz}&amp;size=2000x2000`;
 
       modal.style.display = "block";
 

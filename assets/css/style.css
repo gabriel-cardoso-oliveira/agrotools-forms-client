@@ -680,16 +680,11 @@ button.icon {
     font-weight: 400;
 }
 
-#qrcode {
-    width: 50%;
-    height: auto;
-}
-
 .modal {
     display: none;
     position: fixed;
     z-index: 1;
-    padding-top: 100px;
+    padding-top: 70px;
     left: 0;
     top: 0;
     width: 100%;
