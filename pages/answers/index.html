@@ -2,7 +2,7 @@
 <html lang="pt-br">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="./favicon.ico" />
+    <link rel="icon" href="../../favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -22,20 +22,20 @@
       rel="stylesheet"
       type="text/css"
       media="all"
-      href="./assets/css/style.css"
+      href="../../assets/css/style.css"
     />
   </head>
   <body>
     <article id="multi">
       <div class="topo">
-        <h1>Agrotools Forms</h1>
-        <a href="./pages/questions/index.html" class="btn1">
-          <i class="icons fas fa-plus" ></i>
-          Adicionar
+        <h1>Respostas</h1>
+        <a href="../../index.html" class="btn1">
+          <i class="icons fa fa-arrow-left" ></i>
+          Voltar
         </a>
       </div>
 
-      <div id="divQuizzes"></div>
+      <div id="divAnswers"></div>
     </article>
   </body>
 
@@ -47,11 +47,22 @@
   ></script>
 
   <script>
-    function addQuizzes(quiz) {
-      return $("#divQuizzes").append(quiz);
+    function addAnswer(answer) {
+      return $("#divAnswers").append(answer);
     }
 
     function createEl(quiz) {
+      var htmlAnswers = quiz.answer.map(function(an) {
+        return `
+          <div class="options">
+            <span>
+              Resposta de ${quiz.user}:<br/>
+              ${an.description}
+            </span>
+          </div>
+        `;
+      });
+
       var htmlQuiz = `
         <div class="quizzes">
           <div class="ico">
@@ -64,31 +75,25 @@
             <hr />
             <div class="options">
               <span>
-                <a
-                  class="results"
-                  href="./pages/answers/index.html?id=${quiz.id}"
-                >
-                  Resultados
-                </a>
-                <a
-                  class="respond"
-                  href="./pages/quizzes/index.html?id=${quiz.id}"
-                >
-                  Responder
-                </a>
+                Questão:
+                ${quiz.description}
               </span>
             </div>
+            ${htmlAnswers}
           </div>
         </div>
       `;
       
-      return addQuizzes(htmlQuiz);
+      return addAnswer(htmlQuiz);
     }
 
-    function getQuizzes() {
-      axios.get('https://agrotools-froms.herokuapp.com/quizzes')
+    function getAnswers(id) {
+      axios.get(`https://agrotools-froms.herokuapp.com/answers/${id}`)
         .then(function (response) {
-          response.data.map(function (quiz) {
+          response.data.questions.map(function (quiz) {
+            quiz.title = response.data.title;
+            quiz.user = response.data.user;
+
             createEl(quiz);
           });
         })
@@ -97,6 +102,13 @@
         });
     }
 
-    getQuizzes();
+    function getIdQuiz() {
+      var url = new URL(document.URL);
+      var id = url.searchParams.get("id");
+
+      return getAnswers(id);
+    }
+
+    getIdQuiz();
   </script>
 </html>

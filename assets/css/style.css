@@ -673,8 +673,8 @@ button.icon {
 
 .questions {
     widows: 100%;
-    font-weight: 300;
-    font-size: 21px;
+    font-weight: 500;
+    font-size: 24px;
     display: flex;
 }
 
@@ -682,4 +682,7 @@ button.icon {
     widows: 100%;
     letter-spacing: 0.5px;
     display: flex;
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: 400;
 }
