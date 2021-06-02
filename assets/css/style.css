@@ -478,14 +478,6 @@ button.icon {
     background: rgba(255, 255, 255, .1);
 }
 
-
-
-
-
-
-
-
-
 .tooltip {
     position: relative;
     display: inline-block;
@@ -685,4 +677,28 @@ button.icon {
     font-size: 20px;
     margin-top: 10px;
     font-weight: 400;
+}
+
+@media screen and (max-width: 800px) {
+    .btn1 {
+        width: 100% !important;
+        text-align: center;
+        margin-top: 24px;
+    }
+
+    #multi .topo {
+        display: block;
+    }
+
+    h1 {
+        font-size: 30px;
+        letter-spacing: 3px;
+        padding-top: 20px;
+    }
+}
+
+@media screen and (max-width: 426px) {
+    #multi .topo {
+        height: 134px;
+    }
 }
