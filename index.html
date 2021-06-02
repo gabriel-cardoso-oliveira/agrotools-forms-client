@@ -36,6 +36,26 @@
       </div>
 
       <div id="divQuizzes"></div>
+
+      <!-- Modal -->
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Responder Questionário</h2>
+          </div>
+          <div class="modal-body">
+            <img
+              id='barcode'
+              src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=100x100"
+              alt="Responder Questionário"
+              title="Responder Questionário"
+              width="400"
+              height="400"
+            />
+          </div>
+        </div>
+      </div>
     </article>
   </body>
 
@@ -76,6 +96,13 @@
                 >
                   Responder
                 </a>
+                <a
+                  class="respond"
+                  type="button"
+                  onclick="openModal(${quiz.id})"
+                >
+                  <i class="icons3 fa fa-qrcode"></i>
+                </a>
               </span>
             </div>
           </div>
@@ -98,5 +125,29 @@
     }
 
     getQuizzes();
+
+    function openModal(id) {
+      var urlQuiz = `https://agrotools-forms.netlify.app/pages/quizzes/index.html?id=${id}`;
+
+      var url = `https://api.qrserver.com/v1/create-qr-code/?data=${urlQuiz}&amp;size=400x400`;
+
+      modal.style.display = "block";
+
+      return $('#barcode').attr('src', url);
+    }
+
+    var modal = document.getElementById("myModal");
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
   </script>
 </html>
